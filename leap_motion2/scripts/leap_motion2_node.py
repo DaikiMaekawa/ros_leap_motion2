@@ -44,7 +44,7 @@ def main():
     controller = Leap.Controller()
     controller.add_listener(listener)
 
-    rate = rospy.Rate(10)
+    rate = rospy.Rate(100)
     
     while not rospy.is_shutdown():
         if controller.is_connected:
