@@ -1,21 +1,21 @@
 #!/usr/bin/env python
 
 import rospy
-from leap_motion2.msg import LeapData
 from leap_motion2.msg import Hand
 
 import Leap
 import leap_listener
 
-def convert_frame_to_msg(frame):
-    leap_data_msg = LeapData()
+def publish_hands_data(pub, frame):
     for hand in frame.hands:
         hand_msg = Hand()
         
-        hand_type = "Left hand" if hand.is_left else "Right hand"
+        hand_type = "left_hand" if hand.is_left else "right_hand"
         print "  %s, id %d, position: %s" % (
             hand_type, hand.id, hand.palm_position)
 
+        hand_msg.header.frame_id = hand_type
+        
         normal = hand.palm_normal
         direction = hand.direction
         pos = hand.palm_position
@@ -34,25 +34,24 @@ def convert_frame_to_msg(frame):
         hand_msg.ypr.y = normal.yaw * Leap.RAD_TO_DEG
         hand_msg.ypr.z = direction.roll * Leap.RAD_TO_DEG
 
-        leap_data_msg.hands.append(hand_msg)
-    
-    return leap_data_msg
+        pub.publish(hand_msg)
 
 def main():
     rospy.init_node('leap_motion2')
-    pub = rospy.Publisher("leapmotion2/data", LeapData)
+    pub = rospy.Publisher("leapmotion2/data", Hand)
     
     listener = leap_listener.LeapListener()
     controller = Leap.Controller()
     controller.add_listener(listener)
+
+    rate = rospy.Rate(10)
     
     while not rospy.is_shutdown():
         if controller.is_connected:
             frame = controller.frame()
-            msg = convert_frame_to_msg(frame) 
-            pub.publish(msg)
+            hands = publish_hands_data(pub, frame) 
 
-        rospy.sleep(0.01)
+        rate.sleep()
     else:
         controller.remove_listener(listener)
 
