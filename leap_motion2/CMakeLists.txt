@@ -5,7 +5,6 @@ find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs geometry_msgs mess
 
 add_message_files(
     FILES 
-    LeapData.msg
     Hand.msg
 )
 
