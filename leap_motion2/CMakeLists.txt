@@ -3,7 +3,11 @@ project(leap_motion2)
 
 find_package(catkin REQUIRED COMPONENTS roscpp rospy std_msgs geometry_msgs message_generation)
 
-#add_message_files()
+add_message_files(
+    FILES 
+    LeapData.msg
+    Hand.msg
+)
 
 generate_messages(DEPENDENCIES
     std_msgs
@@ -19,8 +23,8 @@ include_directories(include
     ${catkin_INCLUDE_DIRS}
 )
 
-install(
-    PROGRAMS scripts/leap_motion2.py
+install(PROGRAMS 
+    scripts/leap_motion2_node.py scripts/leap_listener.py
     DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
 
