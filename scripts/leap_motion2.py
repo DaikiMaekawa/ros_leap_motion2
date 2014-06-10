@@ -20,6 +20,8 @@ def main():
                     hand_type, hand.id, hand.palm_position)
 
         rospy.sleep(0.01)
+    else:
+        controller.remove_listener(listener)
 
 if __name__ == '__main__':
     try:
