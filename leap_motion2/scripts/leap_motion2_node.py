@@ -26,13 +26,9 @@ def publish_hands_data(pub, frame):
         hand_msg.normal.x = normal.x
         hand_msg.normal.y = normal.y
         hand_msg.normal.z = normal.z
-        hand_msg.palmpos.x = pos.x
-        hand_msg.palmpos.y = pos.y
-        hand_msg.palmpos.z = pos.z
-
-        #hand_msg.ypr.x = direction.pitch * Leap.RAD_TO_DEG
-        #hand_msg.ypr.y = normal.yaw * Leap.RAD_TO_DEG
-        #hand_msg.ypr.z = direction.roll * Leap.RAD_TO_DEG
+        hand_msg.palmpos.x = pos.x * 0.01
+        hand_msg.palmpos.y = pos.y * 0.01
+        hand_msg.palmpos.z = pos.z * 0.01
         
         hand_msg.ypr.x = direction.pitch
         hand_msg.ypr.y = normal.yaw
@@ -49,7 +45,7 @@ def main():
     controller = Leap.Controller()
     controller.add_listener(listener)
 
-    rate = rospy.Rate(10)
+    rate = rospy.Rate(100)
     
     while not rospy.is_shutdown():
         if controller.is_connected:
