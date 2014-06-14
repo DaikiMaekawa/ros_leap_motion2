@@ -15,7 +15,8 @@ def publish_hands_data(pub, frame):
         #    hand_type, hand.id, hand.palm_position)
 
         hand_msg.header.frame_id = hand_type
-        
+        hand_msg.is_left.data = hand.is_left
+
         normal = hand.palm_normal
         direction = hand.direction
         pos = hand.palm_position
