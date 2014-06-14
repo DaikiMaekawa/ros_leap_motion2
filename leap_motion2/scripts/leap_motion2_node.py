@@ -11,8 +11,8 @@ def publish_hands_data(pub, frame):
         hand_msg = Hand()
         
         hand_type = "left_hand" if hand.is_left else "right_hand"
-        print "  %s, id %d, position: %s" % (
-            hand_type, hand.id, hand.palm_position)
+        #print "  %s, id %d, position: %s" % (
+        #    hand_type, hand.id, hand.palm_position)
 
         hand_msg.header.frame_id = hand_type
         
@@ -29,11 +29,17 @@ def publish_hands_data(pub, frame):
         hand_msg.palmpos.x = pos.x * 0.01
         hand_msg.palmpos.y = pos.y * 0.01
         hand_msg.palmpos.z = pos.z * 0.01
-        
-        hand_msg.ypr.x = direction.pitch
-        hand_msg.ypr.y = normal.yaw
-        hand_msg.ypr.z = direction.roll
 
+        #hand_msg.ypr.x = direction.pitch * Leap.RAD_TO_DEG
+        #hand_msg.ypr.y = normal.yaw * Leap.RAD_TO_DEG
+        #hand_msg.ypr.z = direction.roll * Leap.RAD_TO_DEG
+        
+        hand_msg.ypr.x = direction.pitch * Leap.RAD_TO_DEG
+        hand_msg.ypr.y = normal.roll * Leap.RAD_TO_DEG
+        hand_msg.ypr.z = direction.yaw * Leap.RAD_TO_DEG
+
+        print "ypr: "
+        print hand_msg.ypr
 
         pub.publish(hand_msg)
 
